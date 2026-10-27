@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f26/team02-f26-06
 owner: ucsb-cs156-f26
 repo_name: team02-f26-06
-pull_requests: [{"author":{"id":"U_kgDOC5a6aA","is_bot":false,"login":"DeseraeM","name":""},"headRefName":"Deserae-HelpRequestfixtures","number":184,"title":"Created fixtures for HelpRequest","url":"https://github.com/ucsb-cs156-f26/team02-f26-06/pull/184"}]
+pull_requests: [{"author":{"id":"U_kgDOCqyyAQ","is_bot":false,"login":"nir-nutman","name":"Nir"},"headRefName":"Nir-MenuItemReview-backend","number":185,"title":"Copy files for Backend CRUD API MenuItemReview from team01","url":"https://github.com/ucsb-cs156-f26/team02-f26-06/pull/185"},{"author":{"id":"U_kgDOC5a6aA","is_bot":false,"login":"DeseraeM","name":""},"headRefName":"Deserae-HelpRequestfixtures","number":184,"title":"Created fixtures for HelpRequest","url":"https://github.com/ucsb-cs156-f26/team02-f26-06/pull/184"}]
