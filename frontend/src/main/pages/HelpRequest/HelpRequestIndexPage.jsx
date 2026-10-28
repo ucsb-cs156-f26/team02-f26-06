@@ -1,6 +1,6 @@
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 
-export default function HeloRequestIndexPage() {
+export default function HelpRequestIndexPage() {
   // Stryker disable all : placeholder for future implementation
   return (
     <BasicLayout>
