@@ -16,6 +16,15 @@ vi.mock("react-router", async () => {
   };
 });
 
+const mockToast = vi.fn();
+vi.mock("react-toastify", async (importOriginal) => {
+  const originalModule = await importOriginal();
+  return {
+    ...originalModule,
+    toast: vi.fn((x) => mockToast(x)),
+  };
+});
+
 describe("UCSBDiningCommonsMenuItemTable tests", () => {
   const queryClient = new QueryClient();
 
@@ -232,6 +241,14 @@ describe("UCSBDiningCommonsMenuItemTable tests", () => {
     // assert - check that the delete endpoint was called
 
     await waitFor(() => expect(axiosMock.history.delete.length).toBe(1));
+    expect(axiosMock.history.delete[0].url).toBe(
+      "/api/UCSBDiningCommonsMenuItem",
+    );
     expect(axiosMock.history.delete[0].params).toEqual({ id: 1 });
+
+    await waitFor(() => expect(mockToast).toBeCalled());
+    expect(mockToast).toBeCalledWith({
+      message: "UCSBDiningCommonsMenuItem deleted",
+    });
   });
 });
