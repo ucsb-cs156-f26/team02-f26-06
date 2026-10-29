@@ -16,6 +16,10 @@ vi.mock("react-router", async () => {
   };
 });
 
+const firstOrg = ucsbOrganizationFixtures.threeOrganizations[0];
+const secondOrg = ucsbOrganizationFixtures.threeOrganizations[1];
+const thirdOrg = ucsbOrganizationFixtures.threeOrganizations[2];
+
 describe("UCSBOrganizationTable tests", () => {
   const queryClient = new QueryClient();
   const testId = "UCSBOrganizationTable";
@@ -73,6 +77,23 @@ describe("UCSBOrganizationTable tests", () => {
       `${testId}-cell-row-0-col-Delete-button`,
     );
     expect(deleteButton).not.toBeInTheDocument();
+        expect(
+      screen.getByTestId(`${testId}-cell-row-0-col-orgTranslationShort`),
+    ).toHaveTextContent(firstOrg.orgTranslationShort);
+    
+    expect(
+      screen.getByTestId(`${testId}-cell-row-0-col-orgTranslation`),
+    ).toHaveTextContent(firstOrg.orgTranslation);
+    expect(
+      screen.getByTestId(`${testId}-cell-row-0-col-inactive`),
+    ).toHaveTextContent(String(firstOrg.inactive));
+
+    expect(
+      screen.getByTestId(`${testId}-cell-row-1-col-orgTranslationShort`),
+    ).toHaveTextContent(secondOrg.orgTranslationShort);
+    expect(
+      screen.getByTestId(`${testId}-cell-row-2-col-inactive`),
+    ).toHaveTextContent(String(thirdOrg.inactive));
   });
 
   test("Has the expected column headers and content for adminUser", () => {
