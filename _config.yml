@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f26/team02-f26-06
 owner: ucsb-cs156-f26
 repo_name: team02-f26-06
-pull_requests: [{"author":{"id":"U_kgDODyOWMQ","is_bot":false,"login":"isaacgold29","name":"Isaac Goldberg"},"headRefName":"Isaac-UCSBDiningCommonsMenuItem-fix-edit-url","number":230,"title":"Fix broken Edit navigation URL for UCSBDiningCommonsMenuItem","url":"https://github.com/ucsb-cs156-f26/team02-f26-06/pull/230"}]
+pull_requests: []
