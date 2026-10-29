@@ -1,7 +1,7 @@
 import React from "react";
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
-import { restaurantFixtures } from "fixtures/restaurantFixtures";
+import { ucsbOrganizationFixtures } from "fixtures/ucsbOrganizationFixtures";
 import { http, HttpResponse } from "msw";
 
 import UCSBOrganizationIndexPage from "main/pages/UCSBOrganization/UCSBOrganizationIndexPage";
@@ -26,14 +26,13 @@ Empty.parameters = {
         status: 200,
       });
     }),
-    http.get("/api/restaurants/all", () => {
+    http.get("/api/ucsborganization/all", () => {
       return HttpResponse.json([], { status: 200 });
     }),
   ],
 };
 
 export const ThreeItemsOrdinaryUser = Template.bind({});
-
 ThreeItemsOrdinaryUser.parameters = {
   msw: [
     http.get("/api/currentUser", () => {
@@ -42,14 +41,13 @@ ThreeItemsOrdinaryUser.parameters = {
     http.get("/api/systemInfo", () => {
       return HttpResponse.json(systemInfoFixtures.showingNeither);
     }),
-    http.get("/api/restaurants/all", () => {
-      return HttpResponse.json(restaurantFixtures.threeRestaurants);
+    http.get("/api/ucsborganization/all", () => {
+      return HttpResponse.json(ucsbOrganizationFixtures.threeOrganizations);
     }),
   ],
 };
 
 export const ThreeItemsAdminUser = Template.bind({});
-
 ThreeItemsAdminUser.parameters = {
   msw: [
     http.get("/api/currentUser", () => {
@@ -58,14 +56,11 @@ ThreeItemsAdminUser.parameters = {
     http.get("/api/systemInfo", () => {
       return HttpResponse.json(systemInfoFixtures.showingNeither);
     }),
-    http.get("/api/restaurants/all", () => {
-      return HttpResponse.json(restaurantFixtures.threeRestaurants);
+    http.get("/api/ucsborganization/all", () => {
+      return HttpResponse.json(ucsbOrganizationFixtures.threeOrganizations);
     }),
-    http.delete("/api/restaurants", () => {
-      return HttpResponse.json(
-        { message: "Restaurant deleted successfully" },
-        { status: 200 },
-      );
+    http.delete("/api/ucsborganization", () => {
+      return HttpResponse.json({}, { status: 200 });
     }),
   ],
 };
