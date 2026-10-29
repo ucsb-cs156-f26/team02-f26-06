@@ -46,7 +46,11 @@ describe("UCSBOrganizationIndexPage tests", () => {
       .reply(200, systemInfoFixtures.showingNeither);
   };
 
-  const queryClient = new QueryClient();
+  let queryClient;
+
+  beforeEach(() => {
+    queryClient = new QueryClient();
+  });
 
   test("Renders with Create Button for admin user", async () => {
     setupAdminUser();
