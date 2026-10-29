@@ -97,8 +97,8 @@ describe("RecommendationRequestEditPage tests", () => {
           requesterEmail: "cgaucho@ucsb.edu",
           professorEmail: "phtcon@ucsb.edu",
           explanation: "BS/MS program",
-          dateRequested: "2022-04-20T00:00",
-          dateNeeded: "2022-05-01T00:00",
+          dateRequested: "2022-04-20T18:05:36",
+          dateNeeded: "2022-05-01T09:30:15.123",
           done: false,
         });
       axiosMock.onPut("/api/RecommendationRequest").reply(200, {
@@ -158,8 +158,9 @@ describe("RecommendationRequestEditPage tests", () => {
       expect(requesterEmailField).toHaveValue("cgaucho@ucsb.edu");
       expect(professorEmailField).toHaveValue("phtcon@ucsb.edu");
       expect(explanationField).toHaveValue("BS/MS program");
-      expect(dateRequestedField).toHaveValue("2022-04-20T00:00");
-      expect(dateNeededField).toHaveValue("2022-05-01T00:00");
+      // seconds from the backend are dropped so the browser accepts the value
+      expect(dateRequestedField).toHaveValue("2022-04-20T18:05");
+      expect(dateNeededField).toHaveValue("2022-05-01T09:30");
       expect(doneField).not.toBeChecked();
       expect(submitButton).toHaveTextContent("Update");
 

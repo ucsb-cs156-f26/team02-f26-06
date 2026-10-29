@@ -72,7 +72,13 @@ export default function RecommendationRequestEditPage({ storybook = false }) {
           <RecommendationRequestForm
             submitAction={onSubmit}
             buttonLabel={"Update"}
-            initialContents={recommendationRequest}
+            initialContents={{
+              ...recommendationRequest,
+              // datetime-local inputs only accept whole minutes by default, so
+              // drop any seconds (e.g. from records created in Swagger)
+              dateRequested: recommendationRequest.dateRequested.slice(0, 16),
+              dateNeeded: recommendationRequest.dateNeeded.slice(0, 16),
+            }}
           />
         )}
       </div>
