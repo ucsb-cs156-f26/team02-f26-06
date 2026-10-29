@@ -77,10 +77,10 @@ describe("UCSBOrganizationTable tests", () => {
       `${testId}-cell-row-0-col-Delete-button`,
     );
     expect(deleteButton).not.toBeInTheDocument();
-        expect(
+    expect(
       screen.getByTestId(`${testId}-cell-row-0-col-orgTranslationShort`),
     ).toHaveTextContent(firstOrg.orgTranslationShort);
-    
+
     expect(
       screen.getByTestId(`${testId}-cell-row-0-col-orgTranslation`),
     ).toHaveTextContent(firstOrg.orgTranslation);
