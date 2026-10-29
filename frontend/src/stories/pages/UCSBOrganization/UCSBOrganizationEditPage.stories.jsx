@@ -1,10 +1,10 @@
 import React from "react";
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
+import { ucsbOrganizationFixtures } from "fixtures/ucsbOrganizationFixtures";
 import { http, HttpResponse } from "msw";
 
 import UCSBOrganizationEditPage from "main/pages/UCSBOrganization/UCSBOrganizationEditPage";
-import { restaurantFixtures } from "fixtures/restaurantFixtures";
 
 export default {
   title: "pages/UCSBOrganization/UCSBOrganizationEditPage",
@@ -26,17 +26,21 @@ Default.parameters = {
         status: 200,
       });
     }),
-    http.get("/api/restaurants", () => {
-      return HttpResponse.json(restaurantFixtures.threeRestaurants[0], {
+    http.get("/api/ucsborganization", () => {
+      return HttpResponse.json(ucsbOrganizationFixtures.threeOrganizations[0], {
         status: 200,
       });
     }),
-    http.put("/api/restaurants", () => {
-      return HttpResponse.json({}, { status: 200 });
-    }),
-    http.put("/api/restaurants", (req) => {
-      window.alert("PUT: " + req.url + " and body: " + req.body);
-      return HttpResponse.json({}, { status: 200 });
+    http.put("/api/ucsborganization", () => {
+      return HttpResponse.json(
+        {
+          orgCode: "ZPR",
+          orgTranslationShort: "ZPR EDITED",
+          orgTranslation: "ZETA PHI RHO EDITED",
+          inactive: false,
+        },
+        { status: 200 },
+      );
     }),
   ],
 };
