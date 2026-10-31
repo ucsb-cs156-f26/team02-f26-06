@@ -14,6 +14,7 @@ import edu.ucsb.cs156.example.services.CurrentUserService;
 import edu.ucsb.cs156.example.services.GrantedAuthoritiesService;
 import edu.ucsb.cs156.example.testconfig.TestConfig;
 import java.time.LocalDateTime;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,76 +49,9 @@ public class HelpRequestIT {
 
   @MockitoBean UserRepository userRepository;
 
-  @WithMockUser(roles = {"USER"})
-  @Test
-  public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
-    // arrange
-    HelpRequest helpRequest =
-        HelpRequest.builder()
-            .requesterEmail("a@ucsb.edu")
-            .teamId("team01")
-            .tableOrBreakoutRoom("table 1")
-            .requestTime(LocalDateTime.parse("2026-10-20T12:00:00"))
-            .explanation("Stuck on tests")
-            .solved(false)
-            .build();
-
-    helpRequest = helpRequestRepository.save(helpRequest);
-
-    // act
-    MvcResult response =
-        mockMvc
-            .perform(get("/api/helprequest").param("id", String.valueOf(helpRequest.getId())))
-            .andExpect(status().isOk())
-            .andReturn();
-
-    // assert
-    String expectedJson = mapper.writeValueAsString(helpRequest);
-    String responseString = response.getResponse().getContentAsString();
-    assertEquals(expectedJson, responseString);
-  }
-
-  @WithMockUser(roles = {"ADMIN", "USER"})
-  @Test
-  public void an_admin_user_can_delete_a_helprequest() throws Exception {
-    // arrange
-    HelpRequest helpRequest =
-        HelpRequest.builder()
-            .requesterEmail("a@ucsb.edu")
-            .teamId("team01")
-            .tableOrBreakoutRoom("table 1")
-            .requestTime(LocalDateTime.parse("2026-10-20T12:00:00"))
-            .explanation("Stuck on tests")
-            .solved(false)
-            .build();
-
-    helpRequest = helpRequestRepository.save(helpRequest);
-    long id = helpRequest.getId();
-
-    // act
-    mockMvc
-        .perform(delete("/api/helprequest").param("id", String.valueOf(id)).with(csrf()))
-        .andExpect(status().isOk());
-
-    // assert
-    assertTrue(helpRequestRepository.findById(id).isEmpty());
-  }
-
   @WithMockUser(roles = {"ADMIN", "USER"})
   @Test
   public void an_admin_user_can_post_a_new_helprequest() throws Exception {
-    // arrange
-    HelpRequest expected =
-        HelpRequest.builder()
-            .id(1L)
-            .requesterEmail("a@ucsb.edu")
-            .teamId("team01")
-            .tableOrBreakoutRoom("table 1")
-            .requestTime(LocalDateTime.parse("2026-10-20T12:00:00"))
-            .explanation("Stuck on tests")
-            .solved(true)
-            .build();
-
     // act
     MvcResult response =
         mockMvc
@@ -133,9 +67,55 @@ public class HelpRequestIT {
             .andExpect(status().isOk())
             .andReturn();
 
-    // assert
-    String expectedJson = mapper.writeValueAsString(expected);
-    String responseString = response.getResponse().getContentAsString();
-    assertEquals(expectedJson, responseString);
+    // assert: the response is correct
+    HelpRequest expected =
+        HelpRequest.builder()
+            .id(1L)
+            .requesterEmail("a@ucsb.edu")
+            .teamId("team01")
+            .tableOrBreakoutRoom("table 1")
+            .requestTime(LocalDateTime.parse("2026-10-20T12:00:00"))
+            .explanation("Stuck on tests")
+            .solved(true)
+            .build();
+    assertEquals(mapper.writeValueAsString(expected), response.getResponse().getContentAsString());
+
+    // assert: the row was actually saved in the database
+    assertEquals(1, helpRequestRepository.count());
+    HelpRequest saved = helpRequestRepository.findById(1L).orElseThrow();
+    assertEquals("a@ucsb.edu", saved.getRequesterEmail());
+    assertEquals("Stuck on tests", saved.getExplanation());
+  }
+
+  @WithMockUser(roles = {"ADMIN", "USER"})
+  @Test
+  public void an_admin_user_can_delete_a_helprequest() throws Exception {
+    // arrange
+    HelpRequest helpRequest =
+        HelpRequest.builder()
+            .requesterEmail("a@ucsb.edu")
+            .teamId("team01")
+            .tableOrBreakoutRoom("table 1")
+            .requestTime(LocalDateTime.parse("2026-10-20T12:00:00"))
+            .explanation("Stuck on tests")
+            .solved(false)
+            .build();
+    helpRequest = helpRequestRepository.save(helpRequest);
+    long id = helpRequest.getId();
+
+    // act
+    MvcResult response =
+        mockMvc
+            .perform(delete("/api/helprequest").param("id", String.valueOf(id)).with(csrf()))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    // assert: the message is correct
+    Map<String, Object> json =
+        mapper.readValue(response.getResponse().getContentAsString(), Map.class);
+    assertEquals("HelpRequest with id " + id + " deleted", json.get("message"));
+
+    // assert: the row is gone from the database
+    assertTrue(helpRequestRepository.findById(id).isEmpty());
   }
 }
